@@ -1,8 +1,12 @@
 <ion-view title="Dashboard">
   <ion-content class="padding">
     <h1>Dash</h1>
-    <button ng-click="prevPage()" ng-show="page>1">Prev Page</button>
-    <button ng-click="nextPage()">Next Page</button>
-    <span>User: <pre>{{ rating | json }}</pre></span>
+    <ion-list>
+      <ion-item ng-class="{'item-avatar': true, 'user_me': user.user.me}" ng-repeat="user in getSortedUsers()" type="item-text-wrap" href="#/tab/friend/{{id}}">
+        <img class="user__avatar" ng-src="{{ user.user.avatar_url }}">
+        <h2><span class="user__position">#{{ $index + 1 }}</span> {{user.user.login}}</h2>
+        <p>Points: {{ user.points }}.</p>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

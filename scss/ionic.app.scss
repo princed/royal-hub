@@ -24,3 +24,16 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .fullheight {
   height: 100%;
 }
+
+.user__avatar {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.user__position {
+  color: #888888;
+}
+
+.user_me .item-content {
+  background-color: #FFF0A4;
+}

@@ -3,21 +3,28 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
   .controller('DashCtrl', function ($scope, github, rating) {
     $scope.rating = rating.rating;
 
-    $scope.page = 1;
-    github.getMyEvents($scope.page).then(function (events) {
-      $scope.events = events;
-      var page = function (page) {
-        github.getMyEvents(page).then(function (events) {
-          $scope.events = events;
-        });
-      };
-      $scope.nextPage = function () {
-        page(++$scope.page);
-      };
-      $scope.prevPage = function () {
-        page(--$scope.page);
-      };
+
+    github.getUser().then(function (user) {
+      $scope.myLogin = user.login;
     });
+
+    $scope.getSortedUsers = function () {
+      var result = [], user;
+      for (var id in $scope.rating) {
+        user = $scope.rating[id];
+
+        if (user.user.login === $scope.myLogin) {
+          user.user.me = true;
+          console.log(user, $scope.myLogin);
+        }
+
+        result.push(user);
+      }
+
+      return result.sort(function (a, b) {
+        return b.points - a.points;
+      })
+    }
   })
 
   .controller('FriendsCtrl', function ($scope, Friends) {
