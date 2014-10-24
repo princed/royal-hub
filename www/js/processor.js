@@ -94,3 +94,26 @@ module.config(function (processorProvider) {
     }
   });
 });
+
+/**
+ * Ouroboros badge
+ */
+module.config(function (processorProvider) {
+  var LONG_COMMIT_MESSAGE_LENGTH = 400;
+  var BADGE_KEY = 'ouroboros';
+
+  processorProvider.addListener(function (githubEvent, rating) {
+    if (githubEvent.type === 'IssuesEvent' && !rating.hasBadge(githubEvent.actor, BADGE_KEY)) {
+      var issue = githubEvent.payload.issue;
+      //
+      //if (issue.message && commit.message.length > LONG_COMMIT_MESSAGE_LENGTH) {
+      //  rating.addBadge(githubEvent.actor, {
+      //    key: BADGE_KEY,
+      //    message: 'Got badge Leo Tolstoy for the commit comment: ' + commit.message,
+      //    timestamp: githubEvent.created_at
+      //  });
+      //}
+
+    }
+  });
+});
