@@ -1,14 +1,17 @@
 <ion-view title="Activity of {{ info.user.login }}">
   <ion-content class="padding">
     <div class="list card">
-      <span class="item item-icon-left assertive" ng-repeat="event in info.events">
+      <span class="item assertive" ng-class="{
+          'item-avatar': event.type === 'Badge',
+          'item-icon-left': event.type !== 'Badge'
+      }" ng-repeat="event in info.events">
         <i class="icon" ng-class="{
           'ion-scissors':  event.type === 'IssueResolve',
           'calm':  event.type === 'IssueResolve',
           'ion-flash':  event.type === 'Push',
           'royal':  event.type === 'Push'
-        }"></i>
-        <img ng-src="img/{{ event.badge }}.png" ng-show="event.type === 'Badge'" style="width: 64px; height: 64px">
+        }" ng-if="event.type !== 'Badge'"></i>
+        <img ng-src="img/{{ event.badge }}.png" ng-show="event.type === 'Badge'">
         <h2>+{{ event.points }} {{ event.type }} {{ event.timestamp | date }}</h2>
         <p>{{ event.message }}</p>
       </span>
