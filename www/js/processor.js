@@ -21,16 +21,22 @@ module.service('rating', function () {
   this.rating = {};
   this.badges = {};
 
-  this.addEvent = function (githubUser, event) {
+  this.getUserRating = function (githubUser) {
     var userRating = this.rating[githubUser.id];
     if (userRating == null) {
       userRating = {
         user: githubUser,
         events: [],
+        badges: {},
         points: 0
       };
       this.rating[githubUser.id] = userRating;
     }
+    return userRating;
+  };
+
+  this.addEvent = function (githubUser, event) {
+    var userRating = this.getUserRating(githubUser);
     userRating.events.push(event);
     userRating.points += event.points;
   };
@@ -43,17 +49,13 @@ module.service('rating', function () {
       message: badge.message,
       timestamp: badge.timestamp
     });
-    var userBadges = this.badges[githubUser.id];
-    if (userBadges == null) {
-      userBadges = {};
-      this.badges[githubUser.id] = userBadges;
-    }
-    userBadges[badge.key] = true;
+    var userRating = this.getUserRating(githubUser);
+    userRating.badges[badge.key] = true;
   };
 
   this.hasBadge = function (githubUser, badgeKey) {
-    var userBadges = this.badges[githubUser.id];
-    return !!(userBadges && userBadges[badgeKey]);
+    var userRating = this.rating[githubUser.id];
+    return !!(userRating && userRating.badges[badgeKey]);
   };
 });
 
