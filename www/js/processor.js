@@ -6,20 +6,18 @@ module.provider('processor', function () {
     listeners.push(listener);
   };
 
-  var Processor = function () {
-    this.addEvent = function (githubEvent) {
-      listeners.forEach(function (listener) {
-        listener(githubEvent);
-      });
+  this.$get = function (rating) {
+    return {
+      addEvent: function (githubEvent) {
+        listeners.forEach(function (listener) {
+          listener(githubEvent, rating);
+        });
+      }
     };
-  };
-
-  this.$get = function () {
-    return new Processor();
   };
 });
 
-module.service('rating', function() {
+module.service('rating', function () {
   this.rating = {};
 
   this.addEvent = function (githubUser, event) {
