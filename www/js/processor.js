@@ -101,13 +101,12 @@ module.config(function (processorProvider) {
  * User has created an issue for herself
  */
 module.config(function (processorProvider) {
-  var LONG_COMMIT_MESSAGE_LENGTH = 400;
   var BADGE_KEY = 'ouroboros';
 
   processorProvider.addListener(function (githubEvent, rating) {
     if (githubEvent.type === 'IssuesEvent' && !rating.hasBadge(githubEvent.actor, BADGE_KEY)) {
       var issue = githubEvent.payload.issue;
-      if (issue.action === 'opened' && issue.user.id === issue.assignee.id) {
+      if (githubEvent.payload.action === 'opened' && issue.user.id === issue.assignee.id) {
         rating.addBadge(githubEvent.actor, {
           key: BADGE_KEY,
           message: 'Got badge Ouroboros for an issue assigned to himself',
