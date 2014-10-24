@@ -137,3 +137,31 @@ module.config(function (processorProvider) {
     }
   });
 });
+
+/**
+ * Route 66 badge
+ * User made 66 commits
+ */
+module.config(function (processorProvider) {
+  var BADGE_KEY = 'route66';
+
+  var user2commits = {};
+
+  processorProvider.addListener(function (githubEvent, rating) {
+    if (githubEvent.type === 'PushEvent' && !rating.hasBadge(githubEvent.actor, BADGE_KEY)) {
+      var currentRide = user2commits[githubEvent.actor.id] || 0;
+      currentRide += githubEvent.payload.size;
+      if (currentRide >= 66) {
+        delete user2commits[githubEvent.actor.id];
+        rating.addBadge(githubEvent.actor, {
+          key: BADGE_KEY,
+          message: 'Hey, mate, 66 commits! Wow, what a ride!',
+          description: 'It\'s your 66th commit! What a ride!',
+          timestamp: githubEvent.created_at
+        });
+      } else {
+        user2commits[githubEvent.actor.id] = currentRide;
+      }
+    }
+  });
+});
