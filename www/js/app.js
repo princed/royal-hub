@@ -48,26 +48,30 @@ angular.module('starter', [
       loginState: 'login'
     });
 
+    //jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth, $q) {
+    //  var profilePromise = auth.profilePromise;
+		//
+    //   if (!profilePromise) {
+    //     var profileDefer = $q.defer();
+    //     profilePromise = profileDefer.promise;
+		//
+    //     authProvider.on('loginSuccess', function () {
+    //       profileDefer.resolve(store.get('profile'))
+    //     });
+    //     authProvider.on('authenticated', function () {
+    //       profileDefer.resolve(store.get('profile'))
+    //     });
+    //   }
+		//
+    //  return profilePromise.then(function (profile) {
+    //    return profile.identities[0].access_token;
+    //  });
+
     jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
       var profile = auth.profile || store.get('profile');
       var ghToken = profile && profile.identities[0].access_token;
 
       return ghToken;
-      //var idToken = store.get('token');
-      //var refreshToken = store.get('refreshToken');
-      //// If no token return null
-      //if (!idToken || !refreshToken) {
-      //  return null;
-      //}
-      //// If token is expired, get a new one
-      //if (jwtHelper.isTokenExpired(idToken)) {
-      //  return auth.refreshIdToken(refreshToken).then(function(idToken) {
-      //    store.set('token', idToken);
-      //    return idToken;
-      //  });
-      //} else {
-      //  return idToken;
-      //}
     };
 
     $httpProvider.interceptors.push('jwtInterceptor');
@@ -90,9 +94,6 @@ angular.module('starter', [
         abstract: true,
         templateUrl: "templates/tabs.html",
         data: {
-          // This tells Auth0 that this state requires the user to be logged in.
-          // If the user isn't logged in and he tries to access this state
-          // he'll be redirected to the login page
           requiresLogin: true
         }
       })
