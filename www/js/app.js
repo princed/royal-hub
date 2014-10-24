@@ -32,13 +32,37 @@ angular.module('starter', [
     auth.hookEvents();
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, authProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider) {
 
     authProvider.init({
       domain: 'royal-hub.auth0.com',
       clientID: 'qdPCQ9Ksvdz6weZUIbebl5bltmfqqKwi',
       loginState: 'login'
     });
+
+    jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+      var profile = auth.profile || store.get('profile');
+      var ghToken = profile && profile.identities[0].access_token;
+
+      return ghToken;
+      //var idToken = store.get('token');
+      //var refreshToken = store.get('refreshToken');
+      //// If no token return null
+      //if (!idToken || !refreshToken) {
+      //  return null;
+      //}
+      //// If token is expired, get a new one
+      //if (jwtHelper.isTokenExpired(idToken)) {
+      //  return auth.refreshIdToken(refreshToken).then(function(idToken) {
+      //    store.set('token', idToken);
+      //    return idToken;
+      //  });
+      //} else {
+      //  return idToken;
+      //}
+    }
+
+    $httpProvider.interceptors.push('jwtInterceptor');
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
