@@ -41,7 +41,7 @@ angular.module('starter', [
     });
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider, RestangularProvider) {
 
     authProvider.init({
       domain: 'royal-hub.auth0.com',
@@ -141,6 +141,8 @@ angular.module('starter', [
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/dash');
+
+    RestangularProvider.setBaseUrl('https://api.github.com');
 
   });
 

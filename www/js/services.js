@@ -1,10 +1,10 @@
 angular.module('starter.services', [])
   .service('github', function (Restangular) {
     this.getUser = function() {
-      return Restangular.oneUrl('user', 'https://api.github.com/user').get();
+      return Restangular.oneUrl('user').get();
     };
     this.getEvents = function() {
-      return Restangular.allUrl('events', 'https://api.github.com/events').getList();
+      return Restangular.allUrl('events').getList();
     };
     this.getMyUsername = function() {
       return this.getUser().then(function(user){
@@ -13,9 +13,10 @@ angular.module('starter.services', [])
     };
     var it = this;
     this.getMyEvents = function() {
-      return it.getMyUsername().then(function(username) {
-        return Restangular.allUrl('users', 'https://api.github.com/users').one(username).getList('events');
-      });
+      return it.getMyUsername().then(it.getUserEvents);
+    };
+    this.getUserEvents = function(username) {
+      return Restangular.allUrl('users').one(username).getList('events');
     }
   })
 
