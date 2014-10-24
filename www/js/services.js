@@ -1,8 +1,8 @@
 angular.module('starter.services', ['royal-hub.processor'])
   .service('github', function (Restangular) {
     var it = this;
-    this.getUser = function () {
-      return Restangular.one('user').get();
+    this.getUser = function (id) {
+      return Restangular.one('user', id).get();
     };
     this.getFollowers = function () {
       return Restangular.one('user').getList('followers');

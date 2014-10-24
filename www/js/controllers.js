@@ -47,11 +47,7 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
   })
 
   .controller('AccountCtrl', function ($scope, rating, github, $stateParams) {
-    if (!$stateParams.userId) {
-      github.getUser().then(function(user) {
-        $scope.info = rating.rating[user.id]
-      })
-    } else {
-      $scope.info = rating.rating[$stateParams.userId]
-    }
+    github.getUser($stateParams.userId).then(function(user) {
+      $scope.info = rating.getUserRating(user);
+    });
   });

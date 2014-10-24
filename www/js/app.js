@@ -114,7 +114,7 @@ angular.module('starter', [
       .state('tab.users-detail', {
         url: '/users/:userId',
         views: {
-          'tab-account': {
+          'tab-dash': {
             templateUrl: 'templates/tab-account.html',
             controller: 'AccountCtrl'
           }
