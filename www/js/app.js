@@ -15,7 +15,7 @@ angular.module('starter', [
   'royal-hub.badges.time'
 ])
 
-  .run(function ($ionicPlatform, $rootScope, auth, store) {
+  .run(function ($ionicPlatform, $rootScope, auth, store, $location) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -35,10 +35,20 @@ angular.module('starter', [
       if (!auth.isAuthenticated) {
         var token = store.get('token');
         if (token) {
+          $rootScope.logged = true;
           auth.authenticate(store.get('profile'), token);
         }
       }
     });
+
+    $rootScope.signout = function () {
+      $rootScope.logged = false;
+      auth.signout();
+      store.remove('profile');
+      store.remove('token');
+      store.remove('refreshToken');
+      $location.path('/login');
+    };
   })
 
   .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider, RestangularProvider) {

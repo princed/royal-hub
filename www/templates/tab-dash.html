@@ -1,6 +1,5 @@
-<ion-view title="Dashboard">
+<ion-view title="Top">
   <ion-content class="padding">
-    <h1>Dash</h1>
     <ion-list>
       <ion-item ng-class="{'item-avatar': true, 'user_me': user.user.me}" ng-repeat="user in getSortedUsers()" type="item-text-wrap" href="#/tab/users/{{user.user.id}}">
         <img class="user__avatar" ng-src="{{ user.user.avatar_url }}">
