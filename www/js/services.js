@@ -1,29 +1,33 @@
 angular.module('starter.services', ['royal-hub.processor'])
   .service('github', function (Restangular) {
+    var it = this;
     this.getUser = function () {
-      return Restangular.oneUrl('user').get();
+      return Restangular.one('user').get();
+    };
+    this.getFollowers = function () {
+      return Restangular.one('user').getList('followers');
     };
     this.getEvents = function () {
-      return Restangular.allUrl('events').getList();
+      return Restangular.all('events').getList();
     };
     this.getMyUsername = function () {
       return this.getUser().then(function (user) {
         return user.login;
       })
     };
-    var it = this;
     this.getMyEvents = function (page) {
       return it.getMyUsername().then(function (username) {
         return it.getUserEvents(username, page);
       });
     };
     this.getUserEvents = function (username, page) {
-      page = page || 1;
-      return Restangular.allUrl('users').one(username).getList('events', {page: page});
+      // All pages are shifted
+      page = page || 0;
+      return Restangular.all('users').one(username).getList('events', {page: page + 1});
     }
   })
 
-  .service('eventPump', function (github, processor, $log) {
+  .service('eventPump', function (github, processor, $log, $q) {
     var it = this;
     this.cache = {};
     this.process = function (event) {
@@ -33,18 +37,27 @@ angular.module('starter.services', ['royal-hub.processor'])
     };
 
     this.start = function () {
-      $log.info('Start processing events.');
-      //We have just 10 pages by 30 events
-      for (var i = 1; i < 11; i++) {
-        github.getMyEvents(i).then(function (events) {
-          if (events.length > 0) {
-            $log.info('Processing ' + events.length + ' event(s)');
-            events.forEach(it.process);
-          }
-        });
 
+      function processUserEvents(username) {
+        $log.info('Process events for user: ' + username);
+        //We have just 10 pages by 30 events
+        for (var i = 0; i < 10; i++) {
+          github.getUserEvents(username, i).then(function (events) {
+            if (events.length > 0) {
+              $log.info('Processing ' + events.length + ' event(s)');
+              events.forEach(it.process);
+            }
+          });
+        }
       }
-      $log.info('Finish processing events.');
+      github.getUser().then(function(user){
+        processUserEvents(user.login);
+      });
+      github.getFollowers().then(function(followers) {
+        followers.forEach(function(follower) {
+          processUserEvents(follower.login)
+        })
+      });
     };
 
   })
