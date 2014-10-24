@@ -20,6 +20,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     });
   })
+  .config(function ($githubProvider) {
+    $githubProvider.username('YOUR_USERNAME');
+    $githubProvider.password('YOUR_PASSWORD');
+    $githubProvider.authType('basic');
+  })
 
   .config(function ($stateProvider, $urlRouterProvider) {
 
