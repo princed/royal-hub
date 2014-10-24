@@ -51,7 +51,7 @@ module.service('rating', function () {
     userBadges[badge.key] = true;
   };
 
-  this.hasBadge = function(githubUser, badgeKey) {
+  this.hasBadge = function (githubUser, badgeKey) {
     var userBadges = this.badges[githubUser.id];
     return !!(userBadges && userBadges[badgeKey]);
   };
@@ -75,6 +75,7 @@ module.config(function (processorProvider) {
 
 /**
  * Leo Tolstoy badge
+ * User has committed smth with a long message
  */
 module.config(function (processorProvider) {
   var LONG_COMMIT_MESSAGE_LENGTH = 400;
@@ -97,6 +98,7 @@ module.config(function (processorProvider) {
 
 /**
  * Ouroboros badge
+ * User has created an issue for herself
  */
 module.config(function (processorProvider) {
   var LONG_COMMIT_MESSAGE_LENGTH = 400;
@@ -105,15 +107,13 @@ module.config(function (processorProvider) {
   processorProvider.addListener(function (githubEvent, rating) {
     if (githubEvent.type === 'IssuesEvent' && !rating.hasBadge(githubEvent.actor, BADGE_KEY)) {
       var issue = githubEvent.payload.issue;
-      //
-      //if (issue.message && commit.message.length > LONG_COMMIT_MESSAGE_LENGTH) {
-      //  rating.addBadge(githubEvent.actor, {
-      //    key: BADGE_KEY,
-      //    message: 'Got badge Leo Tolstoy for the commit comment: ' + commit.message,
-      //    timestamp: githubEvent.created_at
-      //  });
-      //}
-
+      if (issue.action === 'opened' && issue.user.id === issue.assignee.id) {
+        rating.addBadge(githubEvent.actor, {
+          key: BADGE_KEY,
+          message: 'Got badge Ouroboros for an issue assigned to himself',
+          timestamp: githubEvent.created_at
+        });
+      }
     }
   });
 });
