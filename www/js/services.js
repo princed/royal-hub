@@ -41,6 +41,8 @@ angular.module('starter.services', ['royal-hub.processor'])
       }
     };
 
+    var deferred = $q.defer();
+
     var processUserEvents = function (username) {
       if (it.users[username]) return;
       $log.info('Process events for user: ' + username);
@@ -50,7 +52,8 @@ angular.module('starter.services', ['royal-hub.processor'])
       for (var i = 0; i < 10; i++) {
         eventPromises.push(github.getUserEvents(username, i));
       }
-      $q.all(eventPromises).then(function (resolved) {
+
+      return $q.all(eventPromises).then(function (resolved) {
         var totalProcessed = 0;
         resolved.forEach(function (events) {
           if (events.length > 0) {
@@ -58,31 +61,36 @@ angular.module('starter.services', ['royal-hub.processor'])
             events.forEach(it.process);
           }
         });
+        return totalProcessed;
+      }).then(function(totalProcessed){
+        it.users[username] = username;
         $log.info('Processing ' + totalProcessed + ' event(s) for user ' + username);
       });
-      it.users[username] = username;
     };
-
 
     this.start = function () {
-      github.getUser().then(function (user) {
+      var processes = [github.getUser().then(function (user) {
         $log.info('My username: ' + user.login);
-        processUserEvents(user.login);
-      });
+        return processUserEvents(user.login);
+      }),
       github.getFollowers().then(function (users) {
-        users.forEach(function (user) {
+        return $q.all(users.map(function (user) {
           $log.info('My follower: ' + user.login);
-          processUserEvents(user.login)
-        })
-      });
+          return processUserEvents(user.login);
+        }));
+      }),
       github.getFollowing().then(function (users) {
-        users.forEach(function (user) {
+        return $q.all(users.map(function (user) {
           $log.info('I follow: ' + user.login);
-          processUserEvents(user.login)
-        })
-      });
+          return processUserEvents(user.login);
+        }));
+      })];
+      $q.all(processes).then(function(){
+        deferred.resolve();
+      })
     };
 
+    this.promise = deferred.promise;
   })
 
   .run(function (eventPump) {

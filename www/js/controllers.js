@@ -1,11 +1,17 @@
-angular.module('starter.controllers', ['restangular', 'starter.services'])
+angular.module('starter.controllers', ['restangular', 'starter.services', 'ionic'])
 
-  .controller('UsersCtrl', function ($scope, github, rating) {
+  .controller('UsersCtrl', function ($scope, github, rating, $ionicLoading, eventPump) {
+    $ionicLoading.show({
+      template: 'Loading...'
+    });
     $scope.rating = rating.rating;
-
 
     github.getUser().then(function (user) {
       $scope.myLogin = user.login;
+    });
+
+    eventPump.promise.then(function(){
+      $ionicLoading.hide();
     });
 
     $scope.getSortedUsers = function () {
