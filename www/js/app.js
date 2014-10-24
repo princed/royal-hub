@@ -15,7 +15,7 @@ angular.module('starter', [
   'royal-hub.badges.time'
 ])
 
-  .run(function ($ionicPlatform, $rootScope, auth, store, $location) {
+  .run(function ($ionicPlatform, $rootScope, auth, store) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -32,20 +32,10 @@ angular.module('starter', [
       if (!auth.isAuthenticated) {
         var token = store.get('token');
         if (token) {
-          $rootScope.logged = true;
           auth.authenticate(store.get('profile'), token);
         }
       }
     });
-
-    $rootScope.signout = function () {
-      $rootScope.logged = false;
-      auth.signout();
-      store.remove('profile');
-      store.remove('token');
-      store.remove('refreshToken');
-      $location.path('/login');
-    };
   })
 
   .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider, RestangularProvider) {
@@ -68,12 +58,16 @@ angular.module('starter', [
         if(config.url.indexOf('https://api.github.com') !== 0) {
           return null;
         }
+        var profile = auth.profile || store.get('profile');
+        if(profile){
+          profileDefer.resolve(profile);
+        }
 
         authProvider.on('loginSuccess',
           function($location, profilePromise) {
             console.log("Login Success");
             profilePromise.then(function(profile) {
-              profileDefer.resolve(profile)
+              profileDefer.resolve(profile);
             });
           });
       }
@@ -83,6 +77,13 @@ angular.module('starter', [
       });
     };
 
+   /* jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
+      var profile = auth.profile || store.get('profile');
+      var ghToken = profile && profile.identities[0].access_token;
+
+      return ghToken;
+    };
+*/
     $httpProvider.interceptors.push('jwtInterceptor');
 
     // Ionic uses AngularUI Router which uses the concept of states
@@ -122,7 +123,7 @@ angular.module('starter', [
       .state('tab.users-detail', {
         url: '/users/:userId',
         views: {
-          'tab-dash': {
+          'tab-account': {
             templateUrl: 'templates/tab-account.html',
             controller: 'AccountCtrl'
           }
