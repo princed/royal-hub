@@ -117,6 +117,11 @@ angular.module('starter', [
             templateUrl: 'templates/tab-account.html',
             controller: 'AccountCtrl'
           }
+        },
+        resolve: {
+          friends: function(Friends) {
+            return Friends.loader
+          }
         }
       })
 
