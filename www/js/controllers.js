@@ -56,5 +56,6 @@ angular.module('starter.controllers', ['restangular', 'starter.services', 'ionic
     github.getUser($stateParams.userId).then(function(user) {
       $scope.info = rating.getUserRating(user);
       $scope.info.user = user;
+      $scope.info.user.me = !$stateParams.userId;
     });
   });

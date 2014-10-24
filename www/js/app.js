@@ -141,6 +141,16 @@ angular.module('starter', [
         }
       })
 
+      .state('tab.users-detail-events', {
+        url: '/users/:userId/events',
+        views: {
+          'tab-dash': {
+            templateUrl: 'templates/tab-events.html',
+            controller: 'AccountCtrl'
+          }
+        }
+      })
+
       .state('tab.account', {
         url: '/me',
         views: {
@@ -151,10 +161,10 @@ angular.module('starter', [
         }
       })
 
-      .state('tab.events', {
-        url: '/users/:userId/events',
+      .state('tab.account-events', {
+        url: '/events',
         views: {
-          'tab-dash': {
+          'tab-account': {
             templateUrl: 'templates/tab-events.html',
             controller: 'AccountCtrl'
           }

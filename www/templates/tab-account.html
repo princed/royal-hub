@@ -16,9 +16,13 @@
         <img ng-src="{{ info.user.avatar_url }}">
       </div>
 
-      <a class="item item-icon-left" ng-href="#/tab/users/{{ info.user.id }}/events">
+      <a class="item item-icon-left" ng-href="#/tab/users/{{ info.user.id }}/events" ng-show="!info.user.me">
         <i class="icon ion-film-marker"></i>
-        My events
+        Activity
+      </a>
+      <a class="item item-icon-left" ng-href="#/tab/events" ng-show="info.user.me">
+        <i class="icon ion-film-marker"></i>
+        Activity
       </a>
     </div>
 
