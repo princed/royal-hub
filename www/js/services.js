@@ -4,7 +4,18 @@ angular.module('starter.services', [])
       return Restangular.oneUrl('user', 'https://api.github.com/user').get();
     };
     this.getEvents = function() {
-      return Restangular.allUrl('events', 'https://api.github.com/user/events').get();
+      return Restangular.allUrl('events', 'https://api.github.com/events').getList();
+    };
+    this.getMyUsername = function() {
+      return this.getUser().then(function(user){
+        return user.login;
+      })
+    };
+    var it = this;
+    this.getMyEvents = function() {
+      return it.getMyUsername().then(function(username) {
+        return Restangular.allUrl('users', 'https://api.github.com/users').one(username).getList('events');
+      });
     }
   })
 

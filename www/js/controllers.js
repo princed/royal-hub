@@ -1,8 +1,8 @@
 angular.module('starter.controllers', ['restangular', 'starter.services'])
 
   .controller('DashCtrl', function ($scope, github) {
-    github.getUser().then(function(user) {
-      $scope.user = user;
+    github.getMyEvents().then(function(events) {
+      $scope.user = events;
     });
   })
 
