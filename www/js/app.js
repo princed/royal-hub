@@ -28,10 +28,7 @@ angular.module('starter', [
       }
     });
 
-    // This hooks al auth events to check everything as soon as the app starts
-    auth.hookEvents();
-
-    $rootScope.$on('$locationChangeStart', function() {
+    $rootScope.$on('$locationChangeStart', function () {
       if (!auth.isAuthenticated) {
         var token = store.get('token');
         if (token) {
@@ -59,30 +56,32 @@ angular.module('starter', [
       loginState: 'login'
     });
 
-    //jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth, $q) {
-    //  var profilePromise = auth.profilePromise;
-		//
-    //   if (!profilePromise) {
-    //     var profileDefer = $q.defer();
-    //     profilePromise = profileDefer.promise;
-		//
-    //     authProvider.on('loginSuccess', function () {
-    //       profileDefer.resolve(store.get('profile'))
-    //     });
-    //     authProvider.on('authenticated', function () {
-    //       profileDefer.resolve(store.get('profile'))
-    //     });
-    //   }
-		//
-    //  return profilePromise.then(function (profile) {
-    //    return profile.identities[0].access_token;
-    //  });
+    jwtInterceptorProvider.tokenGetter = function(store, config, jwtHelper, auth, $q) {
+      var profilePromise = auth.profilePromise;
 
-    jwtInterceptorProvider.tokenGetter = function(store, jwtHelper, auth) {
-      var profile = auth.profile || store.get('profile');
-      var ghToken = profile && profile.identities[0].access_token;
+      if (!profilePromise) {
 
-      return ghToken;
+        var profileDefer = $q.defer();
+        profilePromise = profileDefer.promise;
+
+        // This hooks al auth events to check everything as soon as the app starts
+        if(config.url.indexOf('https://api.github.com') !== 0) {
+          return null;
+        }
+
+        authProvider.on('loginSuccess',
+          function($location, profilePromise) {
+            console.log("Login Success");
+            profilePromise.then(function(profile) {
+              profileDefer.resolve(profile)
+            });
+            $location.path('/');
+          });
+      }
+
+      return profilePromise.then(function (profile) {
+        return profile.identities[0].access_token;
+      });
     };
 
     $httpProvider.interceptors.push('jwtInterceptor');
@@ -130,7 +129,7 @@ angular.module('starter', [
           }
         },
         resolve: {
-          friends: function(Friends) {
+          friends: function (Friends) {
             return Friends.loader
           }
         }
