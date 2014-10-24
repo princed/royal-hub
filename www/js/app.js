@@ -152,9 +152,9 @@ angular.module('starter', [
       })
 
       .state('tab.events', {
-        url: '/me/events',
+        url: '/users/:userId/events',
         views: {
-          'tab-events': {
+          'tab-dash': {
             templateUrl: 'templates/tab-events.html',
             controller: 'AccountCtrl'
           }
