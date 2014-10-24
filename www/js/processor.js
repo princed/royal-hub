@@ -165,3 +165,31 @@ module.config(function (processorProvider) {
     }
   });
 });
+
+/**
+ * Plague doctor
+ * Resolved 10 issues
+ */
+module.config(function (processorProvider) {
+  var BADGE_KEY = 'plague-doctor';
+
+  var user2resolves = {};
+
+  processorProvider.addListener(function (githubEvent, rating) {
+    if (githubEvent.type === 'IssuesEvent' && !rating.hasBadge(githubEvent.actor, BADGE_KEY)) {
+      var currentRide = user2resolves[githubEvent.actor.id] || 0;
+      currentRide ++;
+      if (currentRide >= 10) {
+        delete user2resolves[githubEvent.actor.id];
+        rating.addBadge(githubEvent.actor, {
+          key: BADGE_KEY,
+          message: 'You fixed 10 issues. The likes of you will save us from this plague.',
+          description: 'You fix and heal non-stop to finish this plague!',
+          timestamp: githubEvent.created_at
+        });
+      } else {
+        user2resolves[githubEvent.actor.id] = currentRide;
+      }
+    }
+  });
+});
