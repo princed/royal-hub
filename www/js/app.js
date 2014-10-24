@@ -11,7 +11,8 @@ angular.module('starter', [
   'starter.services',
   'auth0',
   'angular-storage',
-  'angular-jwt'
+  'angular-jwt',
+  'royal-hub.badges.time'
 ])
 
   .run(function ($ionicPlatform, $rootScope, auth, store) {

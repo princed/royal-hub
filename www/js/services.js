@@ -41,30 +41,30 @@ angular.module('starter.services', ['royal-hub.processor'])
       }
     };
 
-    this.start = function () {
+    var processUserEvents = function (username) {
+      if(it.users[username]) return;
+      $log.info('Process events for user: ' + username);
+      var eventPromises = [];
 
-      function processUserEvents(username) {
-        if(it.users[username]) return;
-        $log.info('Process events for user: ' + username);
-        var eventPromises = [];
-
-        //We have just 10 pages by 30 events
-        for (var i = 0; i < 10; i++) {
-          eventPromises.push(github.getUserEvents(username, i));
-        }
-        $q.all(eventPromises).then(function (resolved) {
-          var totalProcessed = 0;
-          resolved.forEach(function (events) {
-            if (events.length > 0) {
-              totalProcessed += events.length;
-              events.forEach(it.process);
-            }
-          });
-          $log.info('Processing ' + totalProcessed + ' event(s) for user ' + username);
-        });
-        it.users[username] = username;
+      //We have just 10 pages by 30 events
+      for (var i = 0; i < 10; i++) {
+        eventPromises.push(github.getUserEvents(username, i));
       }
+      $q.all(eventPromises).then(function (resolved) {
+        var totalProcessed = 0;
+        resolved.forEach(function (events) {
+          if (events.length > 0) {
+            totalProcessed += events.length;
+            events.forEach(it.process);
+          }
+        });
+        $log.info('Processing ' + totalProcessed + ' event(s) for user ' + username);
+      });
+      it.users[username] = username;
+    };
 
+
+    this.start = function () {
       github.getUser().then(function (user) {
         $log.info('My username: ' + user.login);
         processUserEvents(user.login);
