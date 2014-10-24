@@ -7,9 +7,9 @@ module.provider('processor', function () {
   };
 
   var Processor = function () {
-    this.addEvent = function (event) {
+    this.addEvent = function (githubEvent) {
       listeners.forEach(function (listener) {
-        listener(event);
+        listener(githubEvent);
       });
     };
   };
@@ -20,9 +20,9 @@ module.provider('processor', function () {
 });
 
 module.service('rating', function() {
-  this.addEvent = function (user, activity) {
+  this.addEvent = function (user, event) {
     // TODO: save and show on a screen
-    console.log(user, activity);
+    console.log(user, event);
   };
 });
 
@@ -30,6 +30,14 @@ module.service('rating', function() {
  * Score commits
  */
 module.config(function (processorProvider) {
-  processorProvider.addListener(function (githubEvent) {
+  processorProvider.addListener(function (githubEvent, rating) {
+    if (githubEvent.type === 'PushEvent') {
+      rating.addEvent(githubEvent.actor, {
+        type: 'Push',
+        points: githubEvent.payload.size,
+        message: 'Pushed ' + githubEvent.payload.size,
+        timestamp: githubEvent.created_at
+      });
+    }
   });
 });
