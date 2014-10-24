@@ -15,7 +15,7 @@ angular.module('starter', [
   'pascalprecht.github-adapter'
 ])
 
-  .run(function ($ionicPlatform, auth) {
+  .run(function ($ionicPlatform, $rootScope, auth, store) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -30,6 +30,15 @@ angular.module('starter', [
 
     // This hooks al auth events to check everything as soon as the app starts
     auth.hookEvents();
+
+    $rootScope.$on('$locationChangeStart', function() {
+      if (!auth.isAuthenticated) {
+        var token = store.get('token');
+        if (token) {
+          auth.authenticate(store.get('profile'), token);
+        }
+      }
+    });
   })
 
   .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider) {
@@ -60,7 +69,7 @@ angular.module('starter', [
       //} else {
       //  return idToken;
       //}
-    }
+    };
 
     $httpProvider.interceptors.push('jwtInterceptor');
 
