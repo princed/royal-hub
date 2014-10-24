@@ -1,6 +1,18 @@
 <ion-view title="Activity of {{ info.user.login }}">
   <ion-content class="padding">
-    <pre>{{info.user | json}}</pre>
-    <pre>{{info.events | json}}</pre>
+    <div class="list card">
+      <span class="item item-icon-left assertive" ng-repeat="event in info.events">
+        <i class="icon" ng-class="{
+          'ion-scissors':  event.type === 'IssueResolve',
+          'calm':  event.type === 'IssueResolve',
+          'ion-flash':  event.type === 'Push',
+          'royal':  event.type === 'Push',
+          'ion-happy':  event.type === 'Badge',
+          'energized':  event.type === 'Badge'
+        }"></i>
+        <h2>{{ event.type }}: {{ event.points }} point(s)</h2>
+        <p>{{ event.message }}</p>
+      </span>
+    </div>
   </ion-content>
 </ion-view>
