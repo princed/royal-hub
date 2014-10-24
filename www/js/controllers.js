@@ -1,7 +1,7 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['restangular'])
 
-  .controller('DashCtrl', function ($scope, $github) {
-    $scope.user = $github.getUser();
+  .controller('DashCtrl', function ($scope, Restangular) {
+    $scope.user = Restangular.oneUrl('user', 'https://api.github.com/user').get();
   })
 
   .controller('FriendsCtrl', function ($scope, Friends) {
