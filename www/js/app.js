@@ -100,37 +100,28 @@ angular.module('starter', [
 
       // Each tab has its own nav history stack:
 
-      .state('tab.dash', {
-        url: '/dash',
+      .state('tab.users', {
+        url: '/users',
         views: {
           'tab-dash': {
             templateUrl: 'templates/tab-dash.html',
-            controller: 'DashCtrl'
+            controller: 'UsersCtrl'
           }
         }
       })
 
-      .state('tab.friends', {
-        url: '/friends',
+      .state('tab.users-detail', {
+        url: '/users/:userId',
         views: {
-          'tab-friends': {
-            templateUrl: 'templates/tab-friends.html',
-            controller: 'FriendsCtrl'
-          }
-        }
-      })
-      .state('tab.friend-detail', {
-        url: '/friend/:friendId',
-        views: {
-          'tab-friends': {
-            templateUrl: 'templates/friend-detail.html',
-            controller: 'FriendDetailCtrl'
+          'tab-account': {
+            templateUrl: 'templates/tab-account.html',
+            controller: 'AccountCtrl'
           }
         }
       })
 
       .state('tab.account', {
-        url: '/account',
+        url: '/me',
         views: {
           'tab-account': {
             templateUrl: 'templates/tab-account.html',
@@ -140,7 +131,7 @@ angular.module('starter', [
       });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/tab/dash');
+    $urlRouterProvider.otherwise('/tab/users');
 
     RestangularProvider.setBaseUrl('https://api.github.com');
 

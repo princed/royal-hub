@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['restangular', 'starter.services'])
 
-  .controller('DashCtrl', function ($scope, github, rating) {
+  .controller('UsersCtrl', function ($scope, github, rating) {
     $scope.rating = rating.rating;
 
 
@@ -15,7 +15,6 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
 
         if (user.user.login === $scope.myLogin) {
           user.user.me = true;
-          console.log(user, $scope.myLogin);
         }
 
         result.push(user);
@@ -25,14 +24,6 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
         return b.points - a.points;
       })
     }
-  })
-
-  .controller('FriendsCtrl', function ($scope, Friends) {
-    $scope.friends = Friends.all();
-  })
-
-  .controller('FriendDetailCtrl', function ($scope, $stateParams, Friends) {
-    $scope.friend = Friends.get($stateParams.friendId);
   })
 
   .controller('LoginCtrl', function ($scope, auth, store, $location, $rootScope) {
@@ -55,6 +46,12 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
     }
   })
 
-  .controller('AccountCtrl', function ($scope, auth) {
-    $scope.auth = auth
+  .controller('AccountCtrl', function ($scope, rating, github, $stateParams) {
+    if (!$stateParams.userId) {
+      github.getUser().then(function(user) {
+        $scope.info = rating.rating[user.id]
+      })
+    } else {
+      $scope.info = rating.rating[$stateParams.userId]
+    }
   });
