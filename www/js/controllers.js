@@ -4,7 +4,7 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
     $scope.page = 1;
     github.getMyEvents($scope.page).then(function (events) {
       $scope.events = events;
-      var page = function(page) {
+      var page = function (page) {
         github.getMyEvents(page).then(function (events) {
           $scope.events = events;
         });
@@ -28,19 +28,20 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
     $scope.friend = Friends.get($stateParams.friendId);
   })
 
-  .controller('LoginCtrl', function ($scope, auth, store, $location) {
+  .controller('LoginCtrl', function ($scope, auth, store, $location, $rootScope) {
     $scope.login = function () {
       auth.signin({
-        authParams: {
-          scope: 'openid offline_access',
-          device: 'Mobile device'
-        }
+        scope: 'openid offline_access name email',
+        popup: true,
+        connection: 'github',
+        device: 'Mobile device'
       }, function (profile, token, accessToken, state, refreshToken) {
         // Success callback
         store.set('profile', profile);
         store.set('token', token);
         store.set('refreshToken', refreshToken);
         $location.path('/');
+        $rootScope.logged = true;
       }, function () {
         // Error callback
       });
