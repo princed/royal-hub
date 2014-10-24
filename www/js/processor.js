@@ -50,7 +50,7 @@ module.service('rating', function () {
       timestamp: badge.timestamp
     });
     var userRating = this.getUserRating(githubUser);
-    userRating.badges[badge.key] = true;
+    userRating.badges[badge.key] = badge.description;
   };
 
   this.hasBadge = function (githubUser, badgeKey) {
@@ -105,7 +105,8 @@ module.config(function (processorProvider) {
         if (commit.message && commit.message.length > LONG_COMMIT_MESSAGE_LENGTH) {
           rating.addBadge(githubEvent.actor, {
             key: BADGE_KEY,
-            message: 'Got badge Leo Tolstoy for the commit comment: ' + commit.message,
+            message: 'You know how to put words together! Ah, classic!',
+            description: 'That commit comment is a true masterpiece. It deserves its own award, but we better praise you, the author!',
             timestamp: githubEvent.created_at
           });
         }
@@ -128,7 +129,8 @@ module.config(function (processorProvider) {
       if (githubEvent.payload.action === 'opened'&& assignee && issue.user.id === assignee.id) {
         rating.addBadge(githubEvent.actor, {
           key: BADGE_KEY,
-          message: 'Got badge Ouroboros for an issue assigned to himself',
+          message: 'All by myself\' is your motto! You create tasks for yourself and you fix them.',
+          description: 'All by myself is your motto! You create tasks for yourself and you fix them. And if not you who?',
           timestamp: githubEvent.created_at
         });
       }
