@@ -10,9 +10,19 @@ angular.module('starter.controllers', ['restangular', 'starter.services', 'ionic
       $scope.myLogin = user.login;
     });
 
-    eventPump.promise.then(function(){
+    eventPump.promise.then(function () {
       $ionicLoading.hide();
     });
+
+    $scope.doRefresh = function () {
+      $ionicLoading.show({
+        template: 'Loading...'
+      });
+      eventPump.start().then(function () {
+        $ionicLoading.hide();
+        $scope.$broadcast('scroll.refreshComplete');
+      });
+    };
 
     $scope.getSortedUsers = function () {
       var result = [], user;
@@ -53,7 +63,7 @@ angular.module('starter.controllers', ['restangular', 'starter.services', 'ionic
   })
 
   .controller('AccountCtrl', function ($scope, rating, github, $stateParams) {
-    github.getUser($stateParams.userId).then(function(user) {
+    github.getUser($stateParams.userId).then(function (user) {
       $scope.info = rating.getUserRating(user);
       $scope.info.user = user;
       $scope.info.user.me = !$stateParams.userId;

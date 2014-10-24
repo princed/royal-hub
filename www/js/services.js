@@ -85,9 +85,9 @@ angular.module('starter.services', ['royal-hub.processor'])
           return processUserEvents(user.login);
         }));
       })];
-      $q.all(processes).then(function(){
+      return $q.all(processes).then(function(){
         deferred.resolve();
-      })
+      });
     };
 
     this.promise = deferred.promise;
