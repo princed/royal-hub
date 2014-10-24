@@ -28,3 +28,6 @@ Icon
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+
+www/css/ionic.app.css
+www/css/ionic.app.min.css
