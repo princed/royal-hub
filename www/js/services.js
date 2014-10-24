@@ -1,4 +1,12 @@
 angular.module('starter.services', [])
+  .service('github', function (Restangular) {
+    this.getUser = function() {
+      return Restangular.oneUrl('user', 'https://api.github.com/user').get();
+    };
+    this.getEvents = function() {
+      return Restangular.allUrl('events', 'https://api.github.com/user/events').get();
+    }
+  })
 
 /**
  * A simple example service that returns some data.
