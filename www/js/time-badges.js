@@ -6,7 +6,7 @@ var badge = function (key, predicate, descr) {
       if (predicate(new Date(githubEvent.created_at))) {
         rating.addBadge(githubEvent.actor, {
           key: key,
-          name: descr.message,
+          name: descr.name,
           message: descr.message,
           description: descr.description,
           timestamp: githubEvent.created_at
