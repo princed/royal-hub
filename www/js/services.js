@@ -7,6 +7,9 @@ angular.module('starter.services', ['royal-hub.processor'])
     this.getFollowers = function () {
       return Restangular.one('user').getList('followers');
     };
+    this.getFollowing = function () {
+      return Restangular.one('user').getList('following');
+    };
     this.getEvents = function () {
       return Restangular.all('events').getList();
     };
@@ -59,11 +62,19 @@ angular.module('starter.services', ['royal-hub.processor'])
       }
 
       github.getUser().then(function (user) {
+        $log.info('My username: ' + user.login);
         processUserEvents(user.login);
       });
-      github.getFollowers().then(function (followers) {
-        followers.forEach(function (follower) {
-          processUserEvents(follower.login)
+      github.getFollowers().then(function (users) {
+        users.forEach(function (user) {
+          $log.info('My follower: ' + user.login);
+          processUserEvents(user.login)
+        })
+      });
+      github.getFollowing().then(function (users) {
+        users.forEach(function (user) {
+          $log.info('I follow: ' + user.login);
+          processUserEvents(user.login)
         })
       });
     };
