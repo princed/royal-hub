@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
 
-  .controller('DashCtrl', function ($scope) {
+  .controller('DashCtrl', function ($scope, $github) {
+    $scope.user = $github.getUser();
   })
 
   .controller('FriendsCtrl', function ($scope, Friends) {
