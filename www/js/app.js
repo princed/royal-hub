@@ -75,7 +75,6 @@ angular.module('starter', [
             profilePromise.then(function(profile) {
               profileDefer.resolve(profile)
             });
-            $location.path('/');
           });
       }
 
