@@ -10,7 +10,7 @@
           'ion-happy':  event.type === 'Badge',
           'energized':  event.type === 'Badge'
         }"></i>
-        <h2>{{ event.type }}: {{ event.points }} point(s)</h2>
+        <h2>{{ event.type }}: {{ event.points }} point(s) on {{ event.timestamp | date }}</h2>
         <p>{{ event.message }}</p>
       </span>
     </div>
