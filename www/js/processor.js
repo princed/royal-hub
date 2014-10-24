@@ -28,6 +28,7 @@ module.service('rating', function () {
         events: [],
         points: 0
       };
+      this.rating[githubUser.id] = userRating;
     }
     userRating.events.push(event);
     userRating.points += event.points;
