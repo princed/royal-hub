@@ -20,9 +20,19 @@ module.provider('processor', function () {
 });
 
 module.service('rating', function() {
-  this.addEvent = function (user, event) {
-    // TODO: save and show on a screen
-    console.log(user, event);
+  this.rating = {};
+
+  this.addEvent = function (githubUser, event) {
+    var userRating = this.rating[githubUser.id];
+    if (userRating == null) {
+      userRating = {
+        user: githubUser,
+        events: [],
+        points: 0
+      };
+    }
+    userRating.events.push(event);
+    userRating.points += event.points;
   };
 });
 
