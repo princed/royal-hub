@@ -36,4 +36,12 @@ module.config(function (processorProvider) {
       message: 'Hoo-hoo! Magic nights just boost your creativity and dilligence!',
       description: 'Hoo-hoo! The night is young and so are you! You are true night citizen.'
     }));
+  processorProvider.addListener(badge('early-bird',
+    function (created) {
+      return created.getHours() > 5 && created.getHours() < 9;
+    },
+    {
+      message: 'The early bird gets the worm! You know this better than anyone else - you are the first here this morning again! =)',
+      description: 'The early bird gets the worm! Oh, bon appetit, dear! ;-)'
+    }));
 });
