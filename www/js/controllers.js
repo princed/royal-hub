@@ -2,7 +2,7 @@ angular.module('starter.controllers', ['restangular', 'starter.services', 'ionic
 
   .controller('UsersCtrl', function ($scope, github, rating, $ionicLoading, eventPump) {
     $ionicLoading.show({
-      template: 'Loading...'
+      template: '<i class="icon ion-loading-a"></i> Loading...'
     });
     $scope.rating = rating.rating;
 
