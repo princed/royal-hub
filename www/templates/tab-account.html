@@ -4,6 +4,9 @@
 
     <pre>{{info.user | json}}</pre>
     <pre>{{info.badges | json}}</pre>
-    <img ng-src="img/{{ key }}.png" ng-repeat="(key, description) in info.badges">
+    <div ng-repeat="(key, description) in info.badges">
+      <img ng-src="img/{{ key }}.png">
+      {{ description }}
+    </div>
   </ion-content>
 </ion-view>
