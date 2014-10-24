@@ -50,7 +50,10 @@ module.service('rating', function () {
       timestamp: badge.timestamp
     });
     var userRating = this.getUserRating(githubUser);
-    userRating.badges[badge.key] = badge.description;
+    userRating.badges[badge.key] = {
+      name: badge.name,
+      description: badge.description
+    };
   };
 
   this.hasBadge = function (githubUser, badgeKey) {
@@ -105,6 +108,7 @@ module.config(function (processorProvider) {
         if (commit.message && commit.message.length > LONG_COMMIT_MESSAGE_LENGTH) {
           rating.addBadge(githubEvent.actor, {
             key: BADGE_KEY,
+            name: 'Leo Tolstoy',
             message: 'You know how to put words together! Ah, classic!',
             description: 'That commit comment is a true masterpiece. It deserves its own award, but we better praise you, the author!',
             timestamp: githubEvent.created_at
@@ -129,6 +133,7 @@ module.config(function (processorProvider) {
       if (githubEvent.payload.action === 'opened'&& assignee && issue.user.id === assignee.id) {
         rating.addBadge(githubEvent.actor, {
           key: BADGE_KEY,
+          name: 'Ouroboros',
           message: 'All by myself\' is your motto! You create tasks for yourself and you fix them.',
           description: 'All by myself is your motto! You create tasks for yourself and you fix them. And if not you who?',
           timestamp: githubEvent.created_at
@@ -155,6 +160,7 @@ module.config(function (processorProvider) {
         delete user2commits[githubEvent.actor.id];
         rating.addBadge(githubEvent.actor, {
           key: BADGE_KEY,
+          name: 'Route 66',
           message: 'Hey, mate, 66 commits! Wow, what a ride!',
           description: 'It\'s your 66th commit! What a ride!',
           timestamp: githubEvent.created_at
@@ -183,6 +189,7 @@ module.config(function (processorProvider) {
         delete user2resolves[githubEvent.actor.id];
         rating.addBadge(githubEvent.actor, {
           key: BADGE_KEY,
+          name: 'Plague Doctor',
           message: 'You fixed 10 issues. The likes of you will save us from this plague.',
           description: 'You fix and heal non-stop to finish this plague!',
           timestamp: githubEvent.created_at
