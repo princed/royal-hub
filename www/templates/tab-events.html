@@ -6,11 +6,10 @@
           'ion-scissors':  event.type === 'IssueResolve',
           'calm':  event.type === 'IssueResolve',
           'ion-flash':  event.type === 'Push',
-          'royal':  event.type === 'Push',
-          'ion-happy':  event.type === 'Badge',
-          'energized':  event.type === 'Badge'
+          'royal':  event.type === 'Push'
         }"></i>
-        <h2>{{ event.type }}: {{ event.points }} point(s) on {{ event.timestamp | date }}</h2>
+        <img ng-src="img/{{ event.badge }}.png" ng-show="event.type === 'Badge'" style="width: 64px; height: 64px">
+        <h2>+{{ event.points }} {{ event.type }} {{ event.timestamp | date }}</h2>
         <p>{{ event.message }}</p>
       </span>
     </div>
