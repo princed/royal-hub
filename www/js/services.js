@@ -33,15 +33,18 @@ angular.module('starter.services', ['royal-hub.processor'])
     };
 
     this.start = function () {
+      $log.info('Start processing events.');
       //We have just 10 pages by 30 events
       for (var i = 1; i < 11; i++) {
         github.getMyEvents(i).then(function (events) {
           if (events.length > 0) {
+            $log.info('Processing ' + events.length + ' event(s)');
             events.forEach(it.process);
           }
         });
 
       }
+      $log.info('Finish processing events.');
     };
 
   })
