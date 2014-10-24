@@ -33,15 +33,18 @@ angular.module('starter.services', ['royal-hub.processor'])
   .service('eventPump', function (github, processor, $log, $q) {
     var it = this;
     this.cache = {};
+    this.users = {};
     this.process = function (event) {
       if (!it.cache[event.id]) {
         processor.addEvent(event);
+        it.cache[event.id] = true;
       }
     };
 
     this.start = function () {
 
       function processUserEvents(username) {
+        if(it.users[username]) return;
         $log.info('Process events for user: ' + username);
         var eventPromises = [];
 
@@ -58,7 +61,8 @@ angular.module('starter.services', ['royal-hub.processor'])
             }
           });
           $log.info('Processing ' + totalProcessed + ' event(s) for user ' + username);
-        })
+        });
+        it.users[username] = username;
       }
 
       github.getUser().then(function (user) {

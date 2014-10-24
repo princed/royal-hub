@@ -106,7 +106,8 @@ module.config(function (processorProvider) {
   processorProvider.addListener(function (githubEvent, rating) {
     if (githubEvent.type === 'IssuesEvent' && !rating.hasBadge(githubEvent.actor, BADGE_KEY)) {
       var issue = githubEvent.payload.issue;
-      if (githubEvent.payload.action === 'opened' && issue.user.id === issue.assignee.id) {
+      var assignee = issue.assignee;
+      if (githubEvent.payload.action === 'opened'&& assignee && issue.user.id === assignee.id) {
         rating.addBadge(githubEvent.actor, {
           key: BADGE_KEY,
           message: 'Got badge Ouroboros for an issue assigned to himself',
