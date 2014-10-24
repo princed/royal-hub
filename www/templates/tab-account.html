@@ -1,10 +1,34 @@
 <ion-view title="{{ info.user.login }}">
   <ion-content class="padding">
-    <pre>{{info.user | json}}</pre>
-    <pre>{{info.badges | json}}</pre>
-    <div ng-repeat="(key, description) in info.badges">
-      <img ng-src="img/{{ key }}.png">
-      {{ description }}
+    <div class="list card">
+      <div class="item item-icon-left">
+        <i class="icon ion-person"></i>
+        <h2>{{ info.user.name }}</h2>
+        <p>{{ info.user.company }}</p>
+      </div>
+
+      <div class="item item-icon-left">
+        <i class="icon ion-ios7-speedometer-outline"></i>
+        <h2>{{ info.points }} points</h2>
+      </div>
+
+      <div class="item item-image">
+        <img ng-src="{{ info.user.avatar_url }}">
+      </div>
+
+      <a class="item item-icon-left" ng-href="#/tab/users/{{ info.user.id }}/events/">
+        <i class="icon ion-film-marker"></i>
+        My events
+      </a>
+    </div>
+
+    <h3>Badges</h3>
+    <div class="list">
+      <span ng-repeat="(key, badge) in info.badges" class="item item-thumbnail-left">
+        <img ng-src="img/{{ key }}.png">
+        <h2>{{ badge.name }}</h2>
+        <p>{{ badge.description }}</p>
+      </span>
     </div>
   </ion-content>
 </ion-view>
