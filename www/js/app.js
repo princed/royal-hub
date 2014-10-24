@@ -143,6 +143,16 @@ angular.module('starter', [
             controller: 'AccountCtrl'
           }
         }
+      })
+
+      .state('tab.events', {
+        url: '/me/events',
+        views: {
+          'tab-events': {
+            templateUrl: 'templates/tab-events.html',
+            controller: 'AccountCtrl'
+          }
+        }
       });
 
     // if none of the above states are matched, use this as the fallback
