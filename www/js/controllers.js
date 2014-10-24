@@ -1,6 +1,8 @@
 angular.module('starter.controllers', ['restangular', 'starter.services'])
 
-  .controller('DashCtrl', function ($scope, github) {
+  .controller('DashCtrl', function ($scope, github, rating) {
+    $scope.rating = rating.rating;
+
     $scope.page = 1;
     github.getMyEvents($scope.page).then(function (events) {
       $scope.events = events;
