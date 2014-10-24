@@ -11,5 +11,24 @@ angular.module('starter.controllers', [])
     $scope.friend = Friends.get($stateParams.friendId);
   })
 
-  .controller('AccountCtrl', function ($scope) {
-  });
+.controller('LoginCtrl', function($scope, auth, store, $location) {
+  $scope.login = function() {
+    auth.signin({
+      authParams: {
+        scope: 'openid offline_access',
+        device: 'Mobile device'
+      }
+    }, function(profile, token, accessToken, state, refreshToken) {
+      // Success callback
+      store.set('profile', profile);
+      store.set('token', token);
+      store.set('refreshToken', refreshToken);
+      $location.path('/');
+    }, function() {
+      // Error callback
+    });
+  }
+})
+
+.controller('AccountCtrl', function($scope) {
+});

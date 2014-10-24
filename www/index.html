@@ -18,6 +18,15 @@
     <script src="lib/angular-github-adapter/angular-github-adapter.js"></script>
     <script src="lib/github/github.js"></script>
 
+    <!-- Auth0 Lock -->
+    <script src="lib/auth0-lock/build/auth0-lock.js"></script>
+    <!-- auth0-angular -->
+    <script src="lib/auth0-angular/build/auth0-angular.js"></script>
+    <!-- angular storage -->
+    <script src="lib/a0-angular-storage/dist/angular-storage.js"></script>
+    <!-- angular-jwt -->
+    <script src="lib/angular-jwt/dist/angular-jwt.js"></script>
+
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
@@ -27,7 +36,7 @@
     <script src="js/services.js"></script>
   </head>
   <body ng-app="starter" animation="slide-left-right-ios7">
-    <!-- 
+    <!--
       The nav bar that will be updated as we navigate between views.
     -->
     <ion-nav-bar class="bar-stable nav-title-slide-ios7">
@@ -35,7 +44,7 @@
         Back
       </ion-nav-back-button>
     </ion-nav-bar>
-    <!-- 
+    <!--
       The views will be rendered in the <ion-nav-view> directive below
       Templates are in the /templates folder (but you could also
       have templates inline in this html file if you'd like).
