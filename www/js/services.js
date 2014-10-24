@@ -42,7 +42,7 @@ angular.module('starter.services', ['royal-hub.processor'])
     };
 
     var processUserEvents = function (username) {
-      if(it.users[username]) return;
+      if (it.users[username]) return;
       $log.info('Process events for user: ' + username);
       var eventPromises = [];
 
@@ -97,7 +97,7 @@ angular.module('starter.services', ['royal-hub.processor'])
     var friends = [];
 
     var loader = github.getFollowing();
-    loader.then(function(users) {
+    loader.then(function (users) {
       friends = users;
     });
 
@@ -110,5 +110,20 @@ angular.module('starter.services', ['royal-hub.processor'])
         return friends[friendId];
       },
       loader: loader
+    }
+  })
+
+  .filter('len', function () {
+    return function (object) {
+      if (!object) {
+        return 0;
+      }
+      var cnt = 0;
+      for (var prop in object) {
+        if (object.hasOwnProperty(prop)) {
+          cnt++;
+        }
+      }
+      return cnt;
     }
   });

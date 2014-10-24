@@ -5,7 +5,7 @@
       <ion-item ng-class="{'item-avatar': true, 'user_me': user.user.me}" ng-repeat="user in getSortedUsers()" type="item-text-wrap" href="#/tab/users/{{user.user.id}}">
         <img class="user__avatar" ng-src="{{ user.user.avatar_url }}">
         <h2><span class="user__position">#{{ $index + 1 }}</span> {{user.user.login}}</h2>
-        <p>Points: {{ user.points }}.</p>
+        <p>Points: {{ user.points }}. Badges: {{ user.badges | len }}</p>
       </ion-item>
     </ion-list>
   </ion-content>
