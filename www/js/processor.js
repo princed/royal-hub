@@ -76,6 +76,22 @@ module.config(function (processorProvider) {
 });
 
 /**
+ * Score issue resolve
+ */
+module.config(function (processorProvider) {
+  processorProvider.addListener(function (githubEvent, rating) {
+    if (githubEvent.type === 'IssuesEvent' && githubEvent.payload.action === 'closed') {
+      rating.addEvent(githubEvent.actor, {
+        type: 'IssueResolve',
+        points: 3,
+        message: 'Resolved issue ' + githubEvent.payload.issue.title,
+        timestamp: githubEvent.created_at
+      });
+    }
+  });
+});
+
+/**
  * Leo Tolstoy badge
  * User has committed smth with a long message
  */
