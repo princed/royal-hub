@@ -17,6 +17,8 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
       };
     });
   })
+  .run(function(processor) {
+  })
 
   .controller('FriendsCtrl', function ($scope, Friends) {
     $scope.friends = Friends.all();

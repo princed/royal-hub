@@ -11,8 +11,7 @@ angular.module('starter', [
   'starter.services',
   'auth0',
   'angular-storage',
-  'angular-jwt',
-  'pascalprecht.github-adapter'
+  'angular-jwt'
 ])
 
   .run(function ($ionicPlatform, $rootScope, auth, store) {
