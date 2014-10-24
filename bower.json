@@ -4,5 +4,9 @@
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.0.0-beta.13",
     "restangular": "~1.4.0"
+  },
+  "dependencies": {
+    "angular-github-adapter": "~0.1.2",
+    "github": "~0.9.0"
   }
 }
