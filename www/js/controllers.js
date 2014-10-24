@@ -2,10 +2,10 @@ angular.module('starter.controllers', ['restangular', 'starter.services'])
 
   .controller('DashCtrl', function ($scope, github) {
     $scope.page = 1;
-    github.getMyEvents().then(function (events) {
+    github.getMyEvents($scope.page).then(function (events) {
       $scope.events = events;
       var page = function(page) {
-        $scope.events.getList({page: page}).then(function (events) {
+        github.getMyEvents(page).then(function (events) {
           $scope.events = events;
         });
       };

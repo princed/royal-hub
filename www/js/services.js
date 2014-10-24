@@ -12,11 +12,14 @@ angular.module('starter.services', [])
       })
     };
     var it = this;
-    this.getMyEvents = function() {
-      return it.getMyUsername().then(it.getUserEvents);
+    this.getMyEvents = function(page) {
+      return it.getMyUsername().then(function(username) {
+        return it.getUserEvents(username, page);
+      });
     };
-    this.getUserEvents = function(username) {
-      return Restangular.allUrl('users').one(username).getList('events');
+    this.getUserEvents = function(username, page) {
+      page = page || 1;
+      return Restangular.allUrl('users').one(username).getList('events', {page: page});
     }
   })
 
