@@ -40,21 +40,29 @@ angular.module('starter.services', ['royal-hub.processor'])
 
       function processUserEvents(username) {
         $log.info('Process events for user: ' + username);
+        var eventPromises = [];
+
         //We have just 10 pages by 30 events
         for (var i = 0; i < 10; i++) {
-          github.getUserEvents(username, i).then(function (events) {
+          eventPromises.push(github.getUserEvents(username, i));
+        }
+        $q.all(eventPromises).then(function (resolved) {
+          var totalProcessed = 0;
+          resolved.forEach(function (events) {
             if (events.length > 0) {
-              $log.info('Processing ' + events.length + ' event(s)');
+              totalProcessed += events.length;
               events.forEach(it.process);
             }
           });
-        }
+          $log.info('Processing ' + totalProcessed + ' event(s) for user ' + username);
+        })
       }
-      github.getUser().then(function(user){
+
+      github.getUser().then(function (user) {
         processUserEvents(user.login);
       });
-      github.getFollowers().then(function(followers) {
-        followers.forEach(function(follower) {
+      github.getFollowers().then(function (followers) {
+        followers.forEach(function (follower) {
           processUserEvents(follower.login)
         })
       });
@@ -62,7 +70,7 @@ angular.module('starter.services', ['royal-hub.processor'])
 
   })
 
-  .run(function(eventPump) {
+  .run(function (eventPump) {
     eventPump.start();
   })
 
